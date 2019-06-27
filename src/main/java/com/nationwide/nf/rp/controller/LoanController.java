@@ -1,6 +1,7 @@
 package com.nationwide.nf.rp.controller;
 
 import com.nationwide.nf.rp.bean.*;
+import com.nationwide.nf.rp.service.DocuSignSubscriptionService;
 import com.nationwide.nf.rp.service.LoanService;
 import com.nationwide.nf.rp.util.LoanWebServiceValidator;
 import org.apache.log4j.Logger;
@@ -20,6 +21,9 @@ public class LoanController {
     LoanService loanService;
 
     @Autowired
+    DocuSignSubscriptionService docuSignSubscriptionService;
+
+    @Autowired
     LoanWebServiceValidator validator;
 
     private Logger log = Logger.getLogger(getClass().getName());
@@ -33,17 +37,7 @@ public class LoanController {
     public ResponseEntity<DocuSignConfiguration> getConfiguration(@PathVariable String feedSeqId) {
 
         log.debug("Calling getConfiguration with parameters: Feed Seq Id '" + feedSeqId);
-        DocuSignConfiguration docuSignConfiguration = new DocuSignConfiguration();
-
-        docuSignConfiguration.setSubscriptionName("SchoolsFirst");
-        docuSignConfiguration.setSubscriptionStatus("Active");
-        docuSignConfiguration.setSubscriptionBeginDate("01-01-2019");
-        docuSignConfiguration.setSubscriptionEndDate("12-31-2021");
-        docuSignConfiguration.setFileTransferMethod("EB2B");
-        docuSignConfiguration.setFileTransferId("/devl/rptest1/eb2b");
-        docuSignConfiguration.setFileTransferDirectory("/transport/in/PENSIONS/KEYNOTE_OUT");
-        docuSignConfiguration.setFileSubscriptionCases("SCHOOLSFIRST FEDERAL");
-
+        DocuSignConfiguration docuSignConfiguration = docuSignSubscriptionService.getDocuSignSubscription(feedSeqId);
         return new ResponseEntity<DocuSignConfiguration>(docuSignConfiguration, HttpStatus.OK);
     }
 
