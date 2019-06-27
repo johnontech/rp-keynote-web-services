@@ -15,7 +15,17 @@ public class DocuSignConfiguration {
     private String fileTransferDirectory;
     private String fileSubscriptionCases;
 
+    private DocuSignSubscriptionFile[] docuSignSubscriptionFiles;
+
     public DocuSignConfiguration() {
+    }
+
+    public DocuSignSubscriptionFile[] getDocuSignSubscriptionFiles() {
+        return docuSignSubscriptionFiles;
+    }
+
+    public void setDocuSignSubscriptionFiles(DocuSignSubscriptionFile[] docuSignSubscriptionFiles) {
+        this.docuSignSubscriptionFiles = docuSignSubscriptionFiles;
     }
 
     public String getSubscriptionName() {
