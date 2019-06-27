@@ -1,9 +1,6 @@
 package com.nationwide.nf.rp.controller;
 
-import com.nationwide.nf.rp.bean.LoanCorrectionDetail;
-import com.nationwide.nf.rp.bean.LoanDetail;
-import com.nationwide.nf.rp.bean.RepaymentDetail;
-import com.nationwide.nf.rp.bean.ReverseRepaymentDetail;
+import com.nationwide.nf.rp.bean.*;
 import com.nationwide.nf.rp.service.LoanService;
 import com.nationwide.nf.rp.util.LoanWebServiceValidator;
 import org.apache.log4j.Logger;
@@ -26,6 +23,29 @@ public class LoanController {
     LoanWebServiceValidator validator;
 
     private Logger log = Logger.getLogger(getClass().getName());
+
+//    GET  	configuration   			- Gets all configurations
+//    GET  	configuration/{feedSeqId}   	- Gets all configurations
+//    PUT  	configuration/{feedSeqId}   	- Update configuration with feedSeqId
+//    POST 	configuration   			- Create configuration
+
+    @RequestMapping(method = RequestMethod.GET, value = "/docuSignConfiguration/{feedSeqId}")
+    public ResponseEntity<DocuSignConfiguration> getConfiguration(@PathVariable String feedSeqId) {
+
+        log.debug("Calling getConfiguration with parameters: Feed Seq Id '" + feedSeqId);
+        DocuSignConfiguration docuSignConfiguration = new DocuSignConfiguration();
+
+        docuSignConfiguration.setSubscriptionName("SchoolsFirst");
+        docuSignConfiguration.setSubscriptionStatus("Active");
+        docuSignConfiguration.setSubscriptionBeginDate("01-01-2019");
+        docuSignConfiguration.setSubscriptionEndDate("12-31-2021");
+        docuSignConfiguration.setFileTransferMethod("EB2B");
+        docuSignConfiguration.setFileTransferId("/devl/rptest1/eb2b");
+        docuSignConfiguration.setFileTransferDirectory("/transport/in/PENSIONS/KEYNOTE_OUT");
+        docuSignConfiguration.setFileSubscriptionCases("SCHOOLSFIRST FEDERAL");
+
+        return new ResponseEntity<DocuSignConfiguration>(docuSignConfiguration, HttpStatus.OK);
+    }
 
     @RequestMapping(method = RequestMethod.GET, value = "/loan/{loanNumber}")
     public ResponseEntity<LoanDetail> getPrincipalAndInterest(@PathVariable String loanNumber,
