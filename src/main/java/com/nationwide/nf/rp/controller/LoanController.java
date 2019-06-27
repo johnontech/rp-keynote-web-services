@@ -33,7 +33,7 @@ public class LoanController {
 //    PUT  	configuration/{feedSeqId}   	- Update configuration with feedSeqId
 //    POST 	configuration   			- Create configuration
 
-    @RequestMapping(method = RequestMethod.GET, value = "/docuSignConfiguration/{feedSeqId}")
+    @RequestMapping(method = RequestMethod.GET, value = "/docuSignConfiguration/{feedSeqId}", produces =  {"application/json"})
     public ResponseEntity<DocuSignConfiguration> getConfiguration(@PathVariable String feedSeqId) {
 
         log.debug("Calling getConfiguration with parameters: Feed Seq Id '" + feedSeqId);
