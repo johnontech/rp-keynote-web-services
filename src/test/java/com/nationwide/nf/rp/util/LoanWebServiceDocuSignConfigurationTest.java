@@ -13,7 +13,7 @@ import org.apache.log4j.Logger;
  */
 @ContextConfiguration(locations = "classpath:rest-context.xml")
 @RunWith(SpringJUnit4ClassRunner.class)
-public class LoanWebServiceConfigurationTest {
+public class LoanWebServiceDocuSignConfigurationTest {
 
     private Logger log = Logger.getLogger(getClass().getName());
 
