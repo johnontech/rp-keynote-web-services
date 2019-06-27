@@ -1,0 +1,5 @@
+# .gitignore file for rp-keynote-web-services
+# IDEs and editors
+/.idea
+/target
+
