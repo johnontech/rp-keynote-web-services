@@ -11,6 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * Created by John Jorgensen on 4/17/2017.
  */
@@ -28,16 +30,40 @@ public class LoanController {
 
     private Logger log = Logger.getLogger(getClass().getName());
 
-//    GET  	configuration   			- Gets all configurations
-//    GET  	configuration/{feedSeqId}   	- Gets all configurations
-//    PUT  	configuration/{feedSeqId}   	- Update configuration with feedSeqId
-//    POST 	configuration   			- Create configuration
-
     @RequestMapping(method = RequestMethod.GET, value = "/docuSignConfiguration/{feedSeqId}", produces =  {"application/json"})
     public ResponseEntity<DocuSignConfiguration> getConfiguration(@PathVariable String feedSeqId) {
 
         log.debug("Calling getConfiguration with parameters: Feed Seq Id '" + feedSeqId);
         DocuSignConfiguration docuSignConfiguration = docuSignSubscriptionService.getDocuSignSubscription(feedSeqId);
+        return new ResponseEntity<DocuSignConfiguration>(docuSignConfiguration, HttpStatus.OK);
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/docuSignConfiguration", produces =  {"application/json"})
+    public ResponseEntity<AllDocuSignConfigurations> getAllConfigurations() {
+        log.debug("Calling getAllDocuSignConfigurations");
+        AllDocuSignConfigurations allDocuSignConfigurations = docuSignSubscriptionService.getAllDocuSignSubscriptions();
+        return new ResponseEntity<AllDocuSignConfigurations>(allDocuSignConfigurations, HttpStatus.OK);
+    }
+
+    @RequestMapping(method = RequestMethod.PUT, value = "/docuSignConfiguration/{feedSeqId}", produces =  {"application/json"})
+    public ResponseEntity<DocuSignConfiguration> updateDocuSignConfiguration(@RequestBody DocuSignConfiguration docuSignConfiguration) {
+        docuSignSubscriptionService.updateDocuSignConfiguration(docuSignConfiguration);
+        log.info("Calling updateAspectMine with parameters, AspectMine: '" + docuSignConfiguration);
+        return new ResponseEntity<DocuSignConfiguration>(docuSignConfiguration, HttpStatus.OK);
+    }
+
+    @RequestMapping(method = RequestMethod.POST, value = "/docuSignConfiguration/{feedSeqId}", produces =  {"application/json"})
+    public ResponseEntity<DocuSignConfiguration> createDocuSignConfiguration(@RequestBody DocuSignConfiguration docuSignConfiguration) {
+        docuSignSubscriptionService.createDocuSignConfiguration(docuSignConfiguration);
+        log.info("Calling updateAspectMine with parameters, AspectMine: '" + docuSignConfiguration);
+        return new ResponseEntity<DocuSignConfiguration>(docuSignConfiguration, HttpStatus.OK);
+    }
+
+    @RequestMapping(method = RequestMethod.DELETE, value = "/docuSignConfiguration/{feedSeqId}", produces =  {"application/json"})
+    public ResponseEntity<DocuSignConfiguration> deleteConfiguration(@PathVariable String feedSeqId) {
+
+        log.debug("deleteConfiguration with parameters: Feed Seq Id '" + feedSeqId);
+        DocuSignConfiguration docuSignConfiguration = docuSignSubscriptionService.deleteDocuSignSubscription(feedSeqId);
         return new ResponseEntity<DocuSignConfiguration>(docuSignConfiguration, HttpStatus.OK);
     }
 

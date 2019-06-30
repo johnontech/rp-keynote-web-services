@@ -1,5 +1,6 @@
 package com.nationwide.nf.rp.service;
 
+import com.nationwide.nf.rp.bean.AllDocuSignConfigurations;
 import com.nationwide.nf.rp.bean.DocuSignConfiguration;
 import com.nationwide.nf.rp.bean.DocuSignSubscriptionFile;
 import org.springframework.stereotype.Service;
@@ -51,7 +52,31 @@ public class DocuSignSubscriptionServiceImpl  implements DocuSignSubscriptionSer
         docuSignSubscriptionFiles[3] = docuSignSubscriptionFile;
 
         docuSignConfiguration.setDocuSignSubscriptionFiles(docuSignSubscriptionFiles);
-
         return docuSignConfiguration;
+    }
+
+    public AllDocuSignConfigurations getAllDocuSignSubscriptions() {
+        DocuSignConfiguration[] docuSignConfigurations = new DocuSignConfiguration[2];
+        DocuSignConfiguration docuSignConfiguration = getDocuSignSubscription("1");
+
+        docuSignConfigurations[0] = docuSignConfiguration;
+        docuSignConfigurations[1] = docuSignConfiguration;
+
+        AllDocuSignConfigurations allDocuSignConfigurations = new AllDocuSignConfigurations();
+
+        allDocuSignConfigurations.setDocuSignConfigurations(docuSignConfigurations);
+        return allDocuSignConfigurations;
+    }
+
+    public DocuSignConfiguration updateDocuSignConfiguration(DocuSignConfiguration docuSignConfiguration) {
+        return new DocuSignConfiguration();
+    }
+
+    public DocuSignConfiguration createDocuSignConfiguration(DocuSignConfiguration docuSignConfiguration) {
+        return new DocuSignConfiguration();
+    }
+
+    public DocuSignConfiguration deleteDocuSignSubscription(String feedSeqId) {
+        return new DocuSignConfiguration();
     }
 }
