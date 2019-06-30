@@ -17,8 +17,7 @@ public class DocuSignConfiguration {
 
     private DocuSignSubscriptionFile[] docuSignSubscriptionFiles;
 
-    public DocuSignConfiguration() {
-    }
+    public DocuSignConfiguration() {}
 
     public DocuSignSubscriptionFile[] getDocuSignSubscriptionFiles() {
         return docuSignSubscriptionFiles;
