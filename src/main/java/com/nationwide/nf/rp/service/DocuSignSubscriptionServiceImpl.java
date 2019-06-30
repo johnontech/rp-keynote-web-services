@@ -69,14 +69,18 @@ public class DocuSignSubscriptionServiceImpl  implements DocuSignSubscriptionSer
     }
 
     public DocuSignConfiguration updateDocuSignConfiguration(DocuSignConfiguration docuSignConfiguration) {
-        return new DocuSignConfiguration();
+        docuSignConfiguration.setSubscriptionName("Schools First - updated");
+        return docuSignConfiguration;
     }
 
     public DocuSignConfiguration createDocuSignConfiguration(DocuSignConfiguration docuSignConfiguration) {
+        docuSignConfiguration.setSubscriptionName("Schools First - created");
         return new DocuSignConfiguration();
     }
 
     public DocuSignConfiguration deleteDocuSignSubscription(String feedSeqId) {
-        return new DocuSignConfiguration();
+        DocuSignConfiguration docuSignConfiguration = new DocuSignConfiguration();
+        docuSignConfiguration.setSubscriptionName("Schools First - deleted");
+        return docuSignConfiguration;
     }
 }
