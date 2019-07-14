@@ -34,6 +34,7 @@ public class LoanController {
     public ResponseEntity<DocuSignConfiguration> getConfiguration(@PathVariable String feedSeqId) {
 
         log.debug("Calling getConfiguration with parameters: Feed Seq Id '" + feedSeqId);
+//        DocuSignConfiguration docuSignConfiguration = docuSignSubscriptionService.getDocuSignSubscription(feedSeqId);
         DocuSignConfiguration docuSignConfiguration = docuSignSubscriptionService.getDocuSignSubscription(feedSeqId);
         return new ResponseEntity<DocuSignConfiguration>(docuSignConfiguration, HttpStatus.OK);
     }

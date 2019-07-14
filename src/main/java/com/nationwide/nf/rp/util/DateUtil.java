@@ -3,6 +3,10 @@ package com.nationwide.nf.rp.util;
 import com.nationwide.nf.rp.data.dao.base.BaseDao;
 import org.springframework.stereotype.Component;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  * This utility class returns Daily flow date.
  *
@@ -27,5 +31,10 @@ public class DateUtil extends BaseDao {
 				" FROM dual";
 		String sysdate = getJdbcTemplate().queryForObject(sql, String.class);
 		return sysdate;
+	}
+
+	public String getDateAsString(Date date) {
+		DateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyyy");
+		return  dateFormat.format(date);
 	}
 }

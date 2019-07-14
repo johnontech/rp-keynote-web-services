@@ -1,7 +1,9 @@
 package com.nationwide.nf.rp.data.dao.dao;
 
+import com.nationwide.nf.rp.bean.DocuSignConfiguration;
 import com.nationwide.nf.rp.data.dao.base.BaseDao;
 import com.nationwide.nf.rp.entity.FeedEntity;
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
@@ -21,8 +23,10 @@ import java.util.*;
 @Repository
 public class JdbcDocuSignSubscriberFeedDao extends BaseDao {
 
-	  public List<FeedEntity> getFeedDetailsForSubscriber(Integer subscriberSeqId)
-	  {
+	private Logger log = Logger.getLogger(getClass().getName());
+
+	public List<FeedEntity> getFeedDetailsForSubscriber(Integer subscriberSeqId)
+	{
 	    	String sql = "SELECT SEQ_ID, " +
 	    				 "SUBSCRIBER_NAME, " + 
 	    				 "FILE_XFER_METHOD, " + 
@@ -38,7 +42,49 @@ public class JdbcDocuSignSubscriberFeedDao extends BaseDao {
 	    	  List<FeedEntity> list = getJdbcTemplate().query(sql,
 	                  new Object[] {subscriberSeqId}, new PpakDocusignSubscrFeedRowMapper());
 	          return list == null ? new ArrayList<FeedEntity>() : list;
+	}
+
+	public List<FeedEntity> getAllFeedDetailsForSubscribers()
+	{
+	    	String sql = "SELECT SEQ_ID, " +
+	    				 "SUBSCRIBER_NAME, " +
+	    				 "FILE_XFER_METHOD, " +
+	    				 "FILE_XFER_ID, " +
+	    				 "FILE_XFER_DIR, " +
+	    				 "SUBSCR_BEGIN_DATE, " +
+	    				 "SUBSCR_END_DATE, " +
+	    				 "SUBSCR_STATUS " +
+	    				 "FROM PPAK_DOCUSIGN_SUBSCR_FEED " +
+	    				 "ORDER BY SUBSCRIBER_NAME" ;
+
+	    	  List<FeedEntity> list = getJdbcTemplate().query(sql,
+	                  new Object[] {}, new PpakDocusignSubscrFeedRowMapper());
+	          return list == null ? new ArrayList<FeedEntity>() : list;
 	  }
+
+	public int updateDocuSignConfiguration(DocuSignConfiguration docuSignConfiguration) {
+
+		String sql = "UPDATE PPAK_DOCUSIGN_SUBSCR_FEED " +
+				"SET SUBSCRIBER_NAME = ?, " +
+				"FILE_XFER_METHOD = ?, " +
+				"FILE_XFER_ID = ?, " +
+				"FILE_XFER_DIR = ?, " +
+				"SUBSCR_BEGIN_DATE = ?, " +
+				"SUBSCR_END_DATE = ?, " +
+				"SUBSCR_STATUS = ? " +
+				"WHERE SEQ_ID = ? ";
+
+		int numberOfRowsUpdated  = getJdbcTemplate().update(sql,
+				docuSignConfiguration.getSubscriptionName(),
+				docuSignConfiguration.getFileTransferMethod(),
+				docuSignConfiguration.getFileTransferId(),
+				docuSignConfiguration.getFileTransferDirectory(),
+				docuSignConfiguration.getSubscriptionBeginDate(),
+				docuSignConfiguration.getSubscriptionEndDate(),
+				docuSignConfiguration.getSubscriptionStatus(),
+				1);
+		return numberOfRowsUpdated;
+	}
 
 	private class PpakDocusignSubscrFeedRowMapper implements org.springframework.jdbc.core.RowMapper<FeedEntity> {
 

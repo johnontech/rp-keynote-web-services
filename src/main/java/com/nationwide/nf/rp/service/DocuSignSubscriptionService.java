@@ -7,9 +7,11 @@ public interface DocuSignSubscriptionService {
 
     AllDocuSignConfigurations getAllDocuSignSubscriptions();
 
+    DocuSignConfiguration getDocuSignSubscriptionForId(String feedSeqId);
+
     DocuSignConfiguration getDocuSignSubscription(String feedSeqId);
 
-    DocuSignConfiguration updateDocuSignConfiguration(DocuSignConfiguration docuSignConfiguration);
+    int updateDocuSignConfiguration(DocuSignConfiguration docuSignConfiguration);
 
     DocuSignConfiguration createDocuSignConfiguration(DocuSignConfiguration docuSignConfiguration);
 
