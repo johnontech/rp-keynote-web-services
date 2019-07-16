@@ -3,12 +3,14 @@ package com.nationwide.nf.rp.data.dao.dao;
 import com.nationwide.nf.rp.bean.DocuSignConfiguration;
 import com.nationwide.nf.rp.data.dao.base.BaseDao;
 import com.nationwide.nf.rp.entity.FeedEntity;
+import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.*;
 
 /**
@@ -82,8 +84,46 @@ public class JdbcDocuSignSubscriberFeedDao extends BaseDao {
 				docuSignConfiguration.getSubscriptionBeginDate(),
 				docuSignConfiguration.getSubscriptionEndDate(),
 				docuSignConfiguration.getSubscriptionStatus(),
-				1);
+				docuSignConfiguration.getSeqId());
 		return numberOfRowsUpdated;
+	}
+
+	public DocuSignConfiguration create(DocuSignConfiguration docuSignConfiguration) {
+		int numberOfDocuSignConfigurations = getNumberOfDocuSignConfigurations();
+		System.out.println(numberOfDocuSignConfigurations);
+		docuSignConfiguration.setSeqId(String.valueOf(++numberOfDocuSignConfigurations));
+
+		String sql = "INSERT INTO PPAK_DOCUSIGN_SUBSCR_FEED " +
+				"(SEQ_ID,SUBSCRIBER_NAME,FILE_XFER_METHOD,FILE_XFER_ID,FILE_XFER_DIR," +
+				 "SUBSCR_BEGIN_DATE,SUBSCR_END_DATE,SUBSCR_STATUS) " +
+				"VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+
+		int rowCount = getJdbcTemplate().update(sql,
+				docuSignConfiguration.getSeqId(),
+				docuSignConfiguration.getSubscriptionName(),
+				docuSignConfiguration.getFileTransferMethod(),
+				docuSignConfiguration.getFileTransferId(),
+				docuSignConfiguration.getFileTransferDirectory(),
+				docuSignConfiguration.getSubscriptionBeginDate(),
+				docuSignConfiguration.getSubscriptionEndDate(),
+				docuSignConfiguration.getSubscriptionStatus());
+
+		System.out.println("Number of docusign rows inserted: " + rowCount);
+		return docuSignConfiguration;
+	}
+
+	private int getNumberOfDocuSignConfigurations() {
+		return getJdbcTemplate().queryForObject("SELECT COUNT(*) FROM PPAK_DOCUSIGN_SUBSCR_FEED",
+				new Object[]{}, Integer.class);
+	}
+
+	public DocuSignConfiguration deleteDocuSignConfiguration(String feedSeqId) {
+		String sql = "DELETE FROM PPAK_DOCUSIGN_SUBSCR_FEED WHERE SEQ_ID = ?";
+		Object[] params = {Integer.parseInt(feedSeqId)};
+		int[] types = {Types.INTEGER};
+
+		int rowCount = getJdbcTemplate().update(sql,params,types);
+		return new DocuSignConfiguration();
 	}
 
 	private class PpakDocusignSubscrFeedRowMapper implements org.springframework.jdbc.core.RowMapper<FeedEntity> {

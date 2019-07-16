@@ -1,10 +1,12 @@
 package com.nationwide.nf.rp.bean;
 
 import javax.xml.bind.annotation.XmlRootElement;
+import java.util.Arrays;
 
 @XmlRootElement(name="docuSignConfiguration")
 public class DocuSignConfiguration {
 
+    private String seqId;
     private String subscriptionName;
     private String subscriptionBeginDate;
     private String subscriptionEndDate;
@@ -25,6 +27,14 @@ public class DocuSignConfiguration {
 
     public void setDocuSignSubscriptionFiles(DocuSignSubscriptionFile[] docuSignSubscriptionFiles) {
         this.docuSignSubscriptionFiles = docuSignSubscriptionFiles;
+    }
+
+    public String getSeqId() {
+        return seqId;
+    }
+
+    public void setSeqId(String seqId) {
+        this.seqId = seqId;
     }
 
     public String getSubscriptionName() {
@@ -94,7 +104,8 @@ public class DocuSignConfiguration {
     @Override
     public String toString() {
         return "DocuSignConfiguration{" +
-                "subscriptionName='" + subscriptionName + '\'' +
+                "seqId='" + seqId + '\'' +
+                ", subscriptionName='" + subscriptionName + '\'' +
                 ", subscriptionBeginDate='" + subscriptionBeginDate + '\'' +
                 ", subscriptionEndDate='" + subscriptionEndDate + '\'' +
                 ", subscriptionStatus='" + subscriptionStatus + '\'' +
@@ -102,6 +113,7 @@ public class DocuSignConfiguration {
                 ", fileTransferId='" + fileTransferId + '\'' +
                 ", fileTransferDirectory='" + fileTransferDirectory + '\'' +
                 ", fileSubscriptionCases='" + fileSubscriptionCases + '\'' +
+                ", docuSignSubscriptionFiles=" + Arrays.toString(docuSignSubscriptionFiles) +
                 '}';
     }
 }
