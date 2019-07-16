@@ -6,6 +6,7 @@ import com.nationwide.nf.rp.service.LoanService;
 import com.nationwide.nf.rp.util.LoanWebServiceValidator;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -32,7 +33,7 @@ public class LoanController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/docuSignConfiguration/{feedSeqId}", produces =  {"application/json"})
     public ResponseEntity<DocuSignConfiguration> getConfiguration(@PathVariable String feedSeqId) {
-
+        System.out.println("Calling getConfiguration with parameters: Feed Seq Id '" + feedSeqId);
         log.debug("Calling getConfiguration with parameters: Feed Seq Id '" + feedSeqId);
 //        DocuSignConfiguration docuSignConfiguration = docuSignSubscriptionService.getDocuSignSubscription(feedSeqId);
         DocuSignConfiguration docuSignConfiguration = docuSignSubscriptionService.getDocuSignSubscription(feedSeqId);
@@ -41,22 +42,28 @@ public class LoanController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/docuSignConfiguration", produces =  {"application/json"})
     public ResponseEntity<AllDocuSignConfigurations> getAllConfigurations() {
+        System.out.println("Calling getAllDocuSignConfigurations");
         log.debug("Calling getAllDocuSignConfigurations");
         AllDocuSignConfigurations allDocuSignConfigurations = docuSignSubscriptionService.getAllDocuSignSubscriptions();
-        return new ResponseEntity<AllDocuSignConfigurations>(allDocuSignConfigurations, HttpStatus.OK);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Access-Control-Allow-Origin", "*");
+        headers.add("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT");
+
+        return new ResponseEntity<AllDocuSignConfigurations>(allDocuSignConfigurations, headers, HttpStatus.OK );
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "/docuSignConfiguration/{feedSeqId}", produces =  {"application/json"})
     public ResponseEntity<DocuSignConfiguration> updateDocuSignConfiguration(@RequestBody DocuSignConfiguration docuSignConfiguration) {
+        log.info("Calling updateDocuSignConfiguration with parameters, docuSignConfiguration: '" + docuSignConfiguration);
         docuSignSubscriptionService.updateDocuSignConfiguration(docuSignConfiguration);
-        log.info("Calling updateAspectMine with parameters, AspectMine: '" + docuSignConfiguration);
         return new ResponseEntity<DocuSignConfiguration>(docuSignConfiguration, HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/docuSignConfiguration/{feedSeqId}", produces =  {"application/json"})
     public ResponseEntity<DocuSignConfiguration> createDocuSignConfiguration(@RequestBody DocuSignConfiguration docuSignConfiguration) {
+        log.info("Calling createDocuSignConfiguration with parameters, docuSignConfiguration: '" + docuSignConfiguration);
         docuSignSubscriptionService.createDocuSignConfiguration(docuSignConfiguration);
-        log.info("Calling updateAspectMine with parameters, AspectMine: '" + docuSignConfiguration);
         return new ResponseEntity<DocuSignConfiguration>(docuSignConfiguration, HttpStatus.OK);
     }
 
