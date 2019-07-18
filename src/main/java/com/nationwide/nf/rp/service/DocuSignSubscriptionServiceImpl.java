@@ -1,8 +1,6 @@
 package com.nationwide.nf.rp.service;
 
-import com.nationwide.nf.rp.bean.AllDocuSignConfigurations;
 import com.nationwide.nf.rp.bean.DocuSignConfiguration;
-import com.nationwide.nf.rp.bean.DocuSignSubscriptionFile;
 import com.nationwide.nf.rp.data.dao.dao.JdbcDocuSignSubscriberFeedDao;
 import com.nationwide.nf.rp.entity.FeedEntity;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +32,7 @@ public class DocuSignSubscriptionServiceImpl  implements DocuSignSubscriptionSer
         return docuSignConfiguration;
     }
 
-    public AllDocuSignConfigurations getAllDocuSignSubscriptions() {
+    public DocuSignConfiguration[] getAllDocuSignSubscriptions() {
         List<FeedEntity> allFeedDetailsForSubscribers = jdbcDocuSignSubscriberFeedDao.getAllFeedDetailsForSubscribers();
 
         int idx = 0;
@@ -42,6 +40,7 @@ public class DocuSignSubscriptionServiceImpl  implements DocuSignSubscriptionSer
         for (FeedEntity feedEntity : allFeedDetailsForSubscribers) {
             DocuSignConfiguration docuSignConfiguration = new DocuSignConfiguration();
 
+            docuSignConfiguration.setSeqId(String.valueOf(feedEntity.getSeqId()));
             docuSignConfiguration.setSubscriptionName(feedEntity.getSubscriberName());
             docuSignConfiguration.setSubscriptionBeginDate(feedEntity.getSubscrBeginDate().toString());
             docuSignConfiguration.setSubscriptionEndDate(feedEntity.getSubscrEndDate() != null ? feedEntity.getSubscrEndDate().toString() : null);
@@ -49,12 +48,14 @@ public class DocuSignSubscriptionServiceImpl  implements DocuSignSubscriptionSer
             docuSignConfiguration.setFileTransferMethod(feedEntity.getFileXferMethod());
             docuSignConfiguration.setFileTransferId(feedEntity.getFileXferId());
             docuSignConfiguration.setFileTransferDirectory(feedEntity.getFileXferDir());
+
             docuSignConfigurations[idx] = docuSignConfiguration;
             ++idx;
         }
-        AllDocuSignConfigurations allDocuSignConfigurations = new AllDocuSignConfigurations();
-        allDocuSignConfigurations.setDocuSignConfigurations(docuSignConfigurations);
-        return allDocuSignConfigurations;
+        return docuSignConfigurations;
+//        AllDocuSignConfigurations allDocuSignConfigurations = new AllDocuSignConfigurations();
+//        allDocuSignConfigurations.setDocuSignConfigurations(docuSignConfigurations);
+//        return allDocuSignConfigurations;
     }
 
     public int updateDocuSignConfiguration(DocuSignConfiguration docuSignConfiguration) {

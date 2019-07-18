@@ -35,22 +35,26 @@ public class LoanController {
     public ResponseEntity<DocuSignConfiguration> getConfiguration(@PathVariable String feedSeqId) {
         System.out.println("Calling getConfiguration with parameters: Feed Seq Id '" + feedSeqId);
         log.debug("Calling getConfiguration with parameters: Feed Seq Id '" + feedSeqId);
-//        DocuSignConfiguration docuSignConfiguration = docuSignSubscriptionService.getDocuSignSubscription(feedSeqId);
         DocuSignConfiguration docuSignConfiguration = docuSignSubscriptionService.getDocuSignSubscription(feedSeqId);
-        return new ResponseEntity<DocuSignConfiguration>(docuSignConfiguration, HttpStatus.OK);
-    }
-
-    @RequestMapping(method = RequestMethod.GET, value = "/docuSignConfiguration", produces =  {"application/json"})
-    public ResponseEntity<AllDocuSignConfigurations> getAllConfigurations() {
-        System.out.println("Calling getAllDocuSignConfigurations");
-        log.debug("Calling getAllDocuSignConfigurations");
-        AllDocuSignConfigurations allDocuSignConfigurations = docuSignSubscriptionService.getAllDocuSignSubscriptions();
 
         HttpHeaders headers = new HttpHeaders();
         headers.add("Access-Control-Allow-Origin", "*");
         headers.add("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT");
 
-        return new ResponseEntity<AllDocuSignConfigurations>(allDocuSignConfigurations, headers, HttpStatus.OK );
+        return new ResponseEntity<DocuSignConfiguration>(docuSignConfiguration, headers, HttpStatus.OK);
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/docuSignConfiguration", produces =  {"application/json"})
+    public ResponseEntity<DocuSignConfiguration[]> getAllConfigurations() {
+        System.out.println("Calling getAllDocuSignConfigurations");
+        log.debug("Calling getAllDocuSignConfigurations");
+        DocuSignConfiguration[] allDocuSignConfigurations = docuSignSubscriptionService.getAllDocuSignSubscriptions();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Access-Control-Allow-Origin", "*");
+        headers.add("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT");
+
+        return new ResponseEntity<DocuSignConfiguration[]>(allDocuSignConfigurations, headers, HttpStatus.OK );
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "/docuSignConfiguration/{feedSeqId}", produces =  {"application/json"})

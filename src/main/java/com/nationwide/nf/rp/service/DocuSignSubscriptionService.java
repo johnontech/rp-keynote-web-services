@@ -1,11 +1,10 @@
 package com.nationwide.nf.rp.service;
 
-import com.nationwide.nf.rp.bean.AllDocuSignConfigurations;
 import com.nationwide.nf.rp.bean.DocuSignConfiguration;
 
 public interface DocuSignSubscriptionService {
 
-    AllDocuSignConfigurations getAllDocuSignSubscriptions();
+    DocuSignConfiguration[] getAllDocuSignSubscriptions();
 
     DocuSignConfiguration getDocuSignSubscriptionForId(String feedSeqId);
 

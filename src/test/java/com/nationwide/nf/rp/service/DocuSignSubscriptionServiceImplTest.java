@@ -53,8 +53,7 @@ public class DocuSignSubscriptionServiceImplTest {
 
     @Test
     public void getAllDocuSignSubscriptions() {
-        AllDocuSignConfigurations allDocuSignConfigurations = docuSignSubscriptionService.getAllDocuSignSubscriptions();
-        DocuSignConfiguration[] docuSignConfigurations = allDocuSignConfigurations.getDocuSignConfigurations();
+        DocuSignConfiguration[] docuSignConfigurations = docuSignSubscriptionService.getAllDocuSignSubscriptions();
         assertTrue("Docusign configurations were returned", docuSignConfigurations.length > 0);
 
         for (DocuSignConfiguration docuSignConfiguration : docuSignConfigurations) {
