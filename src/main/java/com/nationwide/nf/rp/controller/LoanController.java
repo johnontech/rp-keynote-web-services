@@ -73,10 +73,10 @@ public class LoanController {
 
     @RequestMapping(method = RequestMethod.DELETE, value = "/docuSignConfiguration/{feedSeqId}", produces =  {"application/json"})
     public ResponseEntity<DocuSignConfiguration> deleteConfiguration(@PathVariable String feedSeqId) {
-
-        log.debug("deleteConfiguration with parameters: Feed Seq Id '" + feedSeqId);
+        log.debug("Delete configuration with parameters: Feed Seq Id '" + feedSeqId + "'");
         DocuSignConfiguration docuSignConfiguration = docuSignSubscriptionService.deleteDocuSignSubscription(feedSeqId);
-        return new ResponseEntity<DocuSignConfiguration>(docuSignConfiguration, HttpStatus.OK);
+        log.debug("Successfully deleted configuration with parameters: Feed Seq Id '" + feedSeqId + "'");
+        return new ResponseEntity<DocuSignConfiguration>(HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/loan/{loanNumber}")
