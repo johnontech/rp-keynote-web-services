@@ -1,8 +1,11 @@
 package com.nationwide.nf.rp.service;
 
 import com.nationwide.nf.rp.bean.DocuSignConfiguration;
+import com.nationwide.nf.rp.bean.DocuSignSubscriptionFile;
 import com.nationwide.nf.rp.data.dao.dao.JdbcDocuSignSubscriberFeedDao;
+import com.nationwide.nf.rp.data.dao.dao.JdbcDocuSignSubscriberFilesDao;
 import com.nationwide.nf.rp.entity.FeedEntity;
+import com.nationwide.nf.rp.entity.FileEntity;
 import com.nationwide.nf.rp.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,6 +20,9 @@ public class DocuSignSubscriptionServiceImpl  implements DocuSignSubscriptionSer
     JdbcDocuSignSubscriberFeedDao jdbcDocuSignSubscriberFeedDao;
 
     @Autowired
+    JdbcDocuSignSubscriberFilesDao jdbcDocuSignSubscriberFilesDao;
+
+    @Autowired
     DateUtil dateUtil;
 
     public DocuSignConfiguration getDocuSignSubscription(String feedSeqId) {
@@ -28,14 +34,50 @@ public class DocuSignSubscriptionServiceImpl  implements DocuSignSubscriptionSer
         DocuSignConfiguration docuSignConfiguration = new DocuSignConfiguration();
         docuSignConfiguration.setSeqId(String.valueOf(feedDetailsForSubscriber.get(0).getSeqId()));
         docuSignConfiguration.setSubscriptionName(feedDetailsForSubscriber.get(0).getSubscriberName());
-        docuSignConfiguration.setSubscriptionStatus(feedDetailsForSubscriber.get(0).getSubscrStatus());
+        docuSignConfiguration.setSubscriptionStatus(getStatus(feedDetailsForSubscriber.get(0).getSubscrStatus()));
         docuSignConfiguration.setSubscriptionBeginDate(feedDetailsForSubscriber.get(0).getSubscrBeginDate().toString());
         docuSignConfiguration.setSubscriptionEndDate((feedDetailsForSubscriber.get(0).getSubscrEndDate() == null) ? null :
                                                       feedDetailsForSubscriber.get(0).getSubscrEndDate().toString());
         docuSignConfiguration.setFileTransferMethod(feedDetailsForSubscriber.get(0).getFileXferMethod());
         docuSignConfiguration.setFileTransferId(feedDetailsForSubscriber.get(0).getFileXferId());
         docuSignConfiguration.setFileTransferDirectory(feedDetailsForSubscriber.get(0).getFileXferDir());
+
+        List<FileEntity> filesForSubscription = jdbcDocuSignSubscriberFilesDao.getFilesForSubscription(feedSeqId);
+        if (filesForSubscription.size() > 0) {
+            DocuSignSubscriptionFile[] docuSignSubscriptionFiles = new DocuSignSubscriptionFile[filesForSubscription.size()];
+            DocuSignSubscriptionFile docuSignSubscriptionFile = null;
+            int idx = 0;
+            for (FileEntity fileEntity : filesForSubscription) {
+                docuSignSubscriptionFile = new DocuSignSubscriptionFile();
+                docuSignSubscriptionFile.setFileType(fileEntity.getFileType());
+                docuSignSubscriptionFile.setFileNamePrefix(fileEntity.getFileNamePrefix());
+                docuSignSubscriptionFile.setFileExtension(fileEntity.getFileExtension());
+                docuSignSubscriptionFile.setCreateFileWhenEmpty(
+                        fileEntity.getCreateFileWhenEmpty().equalsIgnoreCase("Y") ? "Yes" : "No");
+                docuSignSubscriptionFile.setFileBeginDate(fileEntity.getFileBeginDate().toString());
+                docuSignSubscriptionFile.setFileEndDate(fileEntity.getFileEndDate() == null ? null : fileEntity.getFileEndDate().toString() );
+                docuSignSubscriptionFile.setInternalEmailNotifAdr(fileEntity.getInternalEmailNotifAddr());
+                docuSignSubscriptionFile.setMftUserName(fileEntity.getMftUserName());
+                docuSignSubscriptionFiles[idx++] = docuSignSubscriptionFile;
+            }
+
+            docuSignConfiguration.setDocuSignSubscriptionFiles(docuSignSubscriptionFiles);
+        }
         return docuSignConfiguration;
+    }
+
+    private String getStatus(String statusCode) {
+        String statusString;
+        if (statusCode.equalsIgnoreCase("A")) {
+            statusString = "Active";
+        } else if (statusCode.equalsIgnoreCase("T")) {
+            statusString = "Terminated";
+        } else if (statusCode.equalsIgnoreCase("H")) {
+            statusString = "Hold";
+        } else {
+            statusString = statusCode;
+        }
+        return statusString;
     }
 
     public DocuSignConfiguration[] getAllDocuSignSubscriptions() {

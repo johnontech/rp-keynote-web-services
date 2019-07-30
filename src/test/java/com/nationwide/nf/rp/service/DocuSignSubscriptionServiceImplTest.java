@@ -47,7 +47,7 @@ public class DocuSignSubscriptionServiceImplTest {
     @Test
     public void getDocuSignSubscription() {
         DocuSignConfiguration docuSignConfiguration = docuSignSubscriptionService.getDocuSignSubscription("1");
-        log.info(docuSignConfiguration);
+        log.info("DocuSign Configuration: " + docuSignConfiguration);
         assertTrue("A docusign configurations was returned", StringUtils.isNotBlank(docuSignConfiguration.getSubscriptionName()));
     }
 
@@ -65,6 +65,14 @@ public class DocuSignSubscriptionServiceImplTest {
     public void updateDocuSignConfiguration() {
         DocuSignConfiguration docuSignConfiguration = docuSignSubscriptionService.getDocuSignSubscriptionForId("1");
         docuSignConfiguration.setFileTransferDirectory(UPDATED_DIRECTORY_NAME);
+        if (docuSignConfiguration.getSubscriptionStatus().equalsIgnoreCase("Active")) {
+            docuSignConfiguration.setSubscriptionStatus("A");
+        } else if (docuSignConfiguration.getSubscriptionStatus().equalsIgnoreCase("Terminated")) {
+            docuSignConfiguration.setSubscriptionStatus("T");
+        } else if (docuSignConfiguration.getSubscriptionStatus().equalsIgnoreCase("Hold")) {
+            docuSignConfiguration.setSubscriptionStatus("H");
+        }
+
         int numberOfRowsUpdated = docuSignSubscriptionService.updateDocuSignConfiguration(docuSignConfiguration);
         assertTrue("Number of rows updated should be one", numberOfRowsUpdated == 1);
 

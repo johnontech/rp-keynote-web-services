@@ -1,9 +1,7 @@
 package com.nationwide.nf.rp.data.dao.dao;
 
 import com.nationwide.nf.rp.data.dao.base.BaseDao;
-import com.nationwide.nf.rp.entity.BatchEntity;
 import com.nationwide.nf.rp.entity.FileEntity;
-import com.nationwide.nf.rp.exception.SalaryReductionFileCreateException;
 import com.nationwide.nf.rp.exception.SubscriberFileCreateException;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Repository;
@@ -215,6 +213,33 @@ public class JdbcDocuSignSubscriberFilesDao extends BaseDao {
         return subscriberFileEntities;
     }
 
+    public List<FileEntity> getFilesForSubscription(String feedSeqId) {
+        String sql = "SELECT DOCUSIGN_SUBSCR_FEED_SEQ_ID, " +
+                            "FILE_TYPE, " +
+                            "FILE_NAME_PREFIX, " +
+                            "FILE_EXTENSION, " +
+                            "CREATE_FILE_WHEN_EMPTY, " +
+                            "FILE_BEGIN_DATE, " +
+                            "FILE_END_DATE, " +
+                            "INTERNAL_EMAIL_NOTIF_ADDR, " +
+                            "MFT_USER_NAME " +
+                       "FROM PPAK_DOCUSIGN_SUBSCR_FILES " +
+                      "WHERE DOCUSIGN_SUBSCR_FEED_SEQ_ID = ?";
+
+//        String sql = "SELECT DOCUSIGN_SUBSCR_FEED_SEQ_ID, FILE_TYPE, FILE_NAME_PREFIX, FILE_EXTENSION, " +
+//                "CREATE_FILE_WHEN_EMPTY, FILE_BEGIN_DATE, FILE_END_DATE, INTERNAL_EMAIL_NOTIF_ADDR " +
+//                "FROM PPAK_DOCUSIGN_SUBSCR_FILES FILES " +
+//                "JOIN PPAK_DOCUSIGN_SUBSCR_FEED FEED ON FEED.SEQ_ID = FILES.DOCUSIGN_SUBSCR_FEED_SEQ_ID " +
+//                "WHERE FILE_TYPE = ? " +
+//                "AND FEED.SUBSCR_STATUS = 'A'";
+
+        Object[] params = {Integer.valueOf(feedSeqId)};
+        int[] types = {Types.INTEGER};
+
+        List<FileEntity> list = getJdbcTemplate().query(sql, params, types, new SubscriberFilesRowMapper());
+        return list == null ? new ArrayList<FileEntity>() : list;
+    }
+
     private class SubscriberFilesRowMapper implements org.springframework.jdbc.core.RowMapper<FileEntity> {
 
         public FileEntity mapRow(ResultSet resultSet, int i) throws SQLException {
@@ -234,21 +259,5 @@ public class JdbcDocuSignSubscriberFilesDao extends BaseDao {
             return entity;
         }
     }
-
-    public List<FileEntity> getSubscriberEntries(String fileType) {
-        String sql = "SELECT docusign_subscr_feed_seq_id, file_type, file_name_prefix, file_extension, " +
-                "create_file_when_empty, file_begin_date, file_end_date, internal_email_notif_addr " +
-                "FROM PPAK_DOCUSIGN_SUBSCR_FILES FILES " +
-                "JOIN PPAK_DOCUSIGN_SUBSCR_FEED FEED ON FEED.SEQ_ID = FILES.DOCUSIGN_SUBSCR_FEED_SEQ_ID " +
-                "WHERE FILE_TYPE = ? " +
-                "AND FEED.SUBSCR_STATUS = 'A'";
-
-        Object[] params = {fileType};
-        int[] types = {Types.VARCHAR};
-
-        List<FileEntity> list = getJdbcTemplate().query(sql, params, types, new SubscriberFilesRowMapper());
-        return list == null ? new ArrayList<FileEntity>() : list;
-    }
-
 
 }
