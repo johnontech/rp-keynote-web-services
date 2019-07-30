@@ -4,10 +4,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.Date;
 
-/**
- * Created by jorgej2 on 6/10/2017.
- */
- @Component
+@Component
 public class FileEntity {
 
     public static final String CREATE_FILE_WHEN_EMPTY = "Y";
@@ -20,9 +17,10 @@ public class FileEntity {
     private String fileNamePrefix;
     private String fileExtension;
     private String createFileWhenEmpty;
-    Date file_begin_date;
-    Date file_end_date;
+    private Date file_begin_date;
+    private Date file_end_date;
     private String internalEmailNotifAddr;
+    private String mftUserName;
 
     public int getSubscriberFeedSeqId() {
         return subscriberFeedSeqId;
@@ -100,18 +98,12 @@ public class FileEntity {
         this.internalEmailNotifAddr = internalEmailNotifAddr;
     }
 
-    @Override
-    public String toString() {
-        return "FileEntity{" +
-                "subscriberFeedSeqId=" + subscriberFeedSeqId +
-                ", fileType='" + fileType + '\'' +
-                ", fileNamePrefix='" + fileNamePrefix + '\'' +
-                ", fileExtension='" + fileExtension + '\'' +
-                ", createFileWhenEmpty='" + createFileWhenEmpty + '\'' +
-                ", file_begin_date=" + file_begin_date +
-                ", file_end_date=" + file_end_date +
-                ", internalEmailNotifAddr='" + internalEmailNotifAddr + '\'' +
-                '}';
+    public String getMftUserName() {
+        return mftUserName;
+    }
+
+    public void setMftUserName(String mftUserName) {
+        this.mftUserName = mftUserName;
     }
 
     public boolean isSchoolsFirstCensusFile() {
@@ -128,5 +120,20 @@ public class FileEntity {
 
     public boolean isSchoolsFirstSalaryReductionFile() {
         return SCHOOLS_FIRST_NW_SRA.equalsIgnoreCase(fileNamePrefix);
+    }
+
+    @Override
+    public String toString() {
+        return "FileEntity{" +
+                "subscriberFeedSeqId=" + subscriberFeedSeqId +
+                ", fileType='" + fileType + '\'' +
+                ", fileNamePrefix='" + fileNamePrefix + '\'' +
+                ", fileExtension='" + fileExtension + '\'' +
+                ", createFileWhenEmpty='" + createFileWhenEmpty + '\'' +
+                ", file_begin_date=" + file_begin_date +
+                ", file_end_date=" + file_end_date +
+                ", internalEmailNotifAddr='" + internalEmailNotifAddr + '\'' +
+                ", mftUserName='" + mftUserName + '\'' +
+                '}';
     }
 }

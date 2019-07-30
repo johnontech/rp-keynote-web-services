@@ -5,53 +5,93 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement(name="docuSignSubscriptionFile")
 public class DocuSignSubscriptionFile {
 
-    String fileName;
-    String beginDate;
-    String endDate;
-    String internalEmail;
+    String fileType;
+    String fileNamePrefix;
+    String fileExtension;
+    String createFileWhenEmpty;
+    String fileBeginDate;
+    String fileEndDate;
+    String internalEmailNotifAdr;
+    String mftUserName;
 
     public DocuSignSubscriptionFile() {
     }
 
-    public String getFileName() {
-        return fileName;
+    public String getFileType() {
+        return fileType;
     }
 
-    public void setFileName(String fileName) {
-        this.fileName = fileName;
+    public void setFileType(String fileType) {
+        this.fileType = fileType;
     }
 
-    public String getBeginDate() {
-        return beginDate;
+    public String getFileNamePrefix() {
+        return fileNamePrefix;
     }
 
-    public void setBeginDate(String beginDate) {
-        this.beginDate = beginDate;
+    public void setFileNamePrefix(String fileNamePrefix) {
+        this.fileNamePrefix = fileNamePrefix;
     }
 
-    public String getEndDate() {
-        return endDate;
+    public String getFileExtension() {
+        return fileExtension;
     }
 
-    public void setEndDate(String endDate) {
-        this.endDate = endDate;
+    public void setFileExtension(String fileExtension) {
+        this.fileExtension = fileExtension;
     }
 
-    public String getInternalEmail() {
-        return internalEmail;
+    public String getCreateFileWhenEmpty() {
+        return createFileWhenEmpty;
     }
 
-    public void setInternalEmail(String internalEmail) {
-        this.internalEmail = internalEmail;
+    public void setCreateFileWhenEmpty(String createFileWhenEmpty) {
+        this.createFileWhenEmpty = createFileWhenEmpty;
+    }
+
+    public String getFileBeginDate() {
+        return fileBeginDate;
+    }
+
+    public void setFileBeginDate(String fileBeginDate) {
+        this.fileBeginDate = fileBeginDate;
+    }
+
+    public String getFileEndDate() {
+        return fileEndDate;
+    }
+
+    public void setFileEndDate(String fileEndDate) {
+        this.fileEndDate = fileEndDate;
+    }
+
+    public String getInternalEmailNotifAdr() {
+        return internalEmailNotifAdr;
+    }
+
+    public void setInternalEmailNotifAdr(String internalEmailNotifAdr) {
+        this.internalEmailNotifAdr = internalEmailNotifAdr;
+    }
+
+    public String getMftUserName() {
+        return mftUserName;
+    }
+
+    public void setMftUserName(String mftUserName) {
+        this.mftUserName = mftUserName;
     }
 
     @Override
     public String toString() {
         return "DocuSignSubscriptionFile{" +
-                "fileName='" + fileName + '\'' +
-                ", beginDate='" + beginDate + '\'' +
-                ", endDate='" + endDate + '\'' +
-                ", internalEmail='" + internalEmail + '\'' +
+                "fileType='" + fileType + '\'' +
+                ", fileNamePrefix='" + fileNamePrefix + '\'' +
+                ", fileExtension='" + fileExtension + '\'' +
+                ", createFileWhenEmpty='" + createFileWhenEmpty + '\'' +
+                ", fileBeginDate='" + fileBeginDate + '\'' +
+                ", fileEndDate='" + fileEndDate + '\'' +
+                ", internalEmailNotifAdr='" + internalEmailNotifAdr + '\'' +
+                ", mftUserName='" + mftUserName + '\'' +
                 '}';
     }
 }
