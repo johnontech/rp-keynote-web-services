@@ -1,6 +1,5 @@
 package com.nationwide.nf.rp.service;
 
-import com.nationwide.nf.rp.bean.AllDocuSignConfigurations;
 import com.nationwide.nf.rp.bean.DocuSignConfiguration;
 import com.nationwide.nf.rp.util.DateUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -15,6 +14,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 import com.nationwide.nf.rp.data.dao.dao.JdbcDocuSignSubscriberFeedDao;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import static org.junit.Assert.*;
@@ -65,11 +65,6 @@ public class DocuSignSubscriptionServiceImplTest {
     public void updateDocuSignConfiguration() {
         DocuSignConfiguration docuSignConfiguration = docuSignSubscriptionService.getDocuSignSubscriptionForId("1");
         docuSignConfiguration.setFileTransferDirectory(UPDATED_DIRECTORY_NAME);
-        String dateAsString = dateUtil.getDateAsString(new Date());
-        System.out.println("Date: " + dateAsString);
-        docuSignConfiguration.setSubscriptionBeginDate(dateAsString);
-        docuSignConfiguration.setSubscriptionEndDate(dateAsString);
-
         int numberOfRowsUpdated = docuSignSubscriptionService.updateDocuSignConfiguration(docuSignConfiguration);
         assertTrue("Number of rows updated should be one", numberOfRowsUpdated == 1);
 
@@ -81,8 +76,8 @@ public class DocuSignSubscriptionServiceImplTest {
     public void createDocuSignConfiguration() {
         DocuSignConfiguration docuSignConfiguration = new DocuSignConfiguration();
         docuSignConfiguration.setSubscriptionName("New subscription Name");
-        docuSignConfiguration.setSubscriptionBeginDate("01-Jan-2017");
-        docuSignConfiguration.setSubscriptionEndDate("01-Jan-2021");
+        docuSignConfiguration.setSubscriptionBeginDate("2017-01-01");
+        docuSignConfiguration.setSubscriptionEndDate("2021-01-01");
         docuSignConfiguration.setSubscriptionStatus("A");
         docuSignConfiguration.setFileTransferMethod("EB2B");
         docuSignConfiguration.setFileTransferId("/devl/rptest1/eb2b");
