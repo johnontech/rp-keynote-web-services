@@ -3,9 +3,11 @@ package com.nationwide.nf.rp.service;
 import com.nationwide.nf.rp.bean.DocuSignConfiguration;
 import com.nationwide.nf.rp.data.dao.dao.JdbcDocuSignSubscriberFeedDao;
 import com.nationwide.nf.rp.entity.FeedEntity;
+import com.nationwide.nf.rp.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -14,6 +16,9 @@ public class DocuSignSubscriptionServiceImpl  implements DocuSignSubscriptionSer
     @Autowired
     JdbcDocuSignSubscriberFeedDao jdbcDocuSignSubscriberFeedDao;
 
+    @Autowired
+    DateUtil dateUtil;
+
     public DocuSignConfiguration getDocuSignSubscription(String feedSeqId) {
         return getDocuSignSubscriptionForId(feedSeqId);
     }
@@ -21,6 +26,7 @@ public class DocuSignSubscriptionServiceImpl  implements DocuSignSubscriptionSer
     public DocuSignConfiguration getDocuSignSubscriptionForId(String feedSeqId) {
         List<FeedEntity> feedDetailsForSubscriber = jdbcDocuSignSubscriberFeedDao.getFeedDetailsForSubscriber(Integer.parseInt(feedSeqId));
         DocuSignConfiguration docuSignConfiguration = new DocuSignConfiguration();
+        docuSignConfiguration.setSeqId(String.valueOf(feedDetailsForSubscriber.get(0).getSeqId()));
         docuSignConfiguration.setSubscriptionName(feedDetailsForSubscriber.get(0).getSubscriberName());
         docuSignConfiguration.setSubscriptionStatus(feedDetailsForSubscriber.get(0).getSubscrStatus());
         docuSignConfiguration.setSubscriptionBeginDate(feedDetailsForSubscriber.get(0).getSubscrBeginDate().toString());
@@ -53,17 +59,21 @@ public class DocuSignSubscriptionServiceImpl  implements DocuSignSubscriptionSer
             ++idx;
         }
         return docuSignConfigurations;
-//        AllDocuSignConfigurations allDocuSignConfigurations = new AllDocuSignConfigurations();
-//        allDocuSignConfigurations.setDocuSignConfigurations(docuSignConfigurations);
-//        return allDocuSignConfigurations;
     }
 
     public int updateDocuSignConfiguration(DocuSignConfiguration docuSignConfiguration) {
-        docuSignConfiguration.setSubscriptionName("Schools First - updated");
+        docuSignConfiguration.setSubscriptionBeginDate(dateUtil.reformatDate(
+        "yyyy-MM-dd", docuSignConfiguration.getSubscriptionBeginDate()));
+        docuSignConfiguration.setSubscriptionEndDate(dateUtil.reformatDate(
+        "yyyy-MM-dd", docuSignConfiguration.getSubscriptionEndDate()));
         return jdbcDocuSignSubscriberFeedDao.updateDocuSignConfiguration(docuSignConfiguration);
     }
 
     public DocuSignConfiguration createDocuSignConfiguration(DocuSignConfiguration docuSignConfiguration) {
+        docuSignConfiguration.setSubscriptionBeginDate(dateUtil.reformatDate(
+                "yyyy-MM-dd", docuSignConfiguration.getSubscriptionBeginDate()));
+        docuSignConfiguration.setSubscriptionEndDate(dateUtil.reformatDate(
+                "yyyy-MM-dd", docuSignConfiguration.getSubscriptionEndDate()));
         return jdbcDocuSignSubscriberFeedDao.create(docuSignConfiguration);
     }
 
