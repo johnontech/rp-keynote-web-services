@@ -35,9 +35,9 @@ public class DocuSignSubscriptionServiceImpl  implements DocuSignSubscriptionSer
         docuSignConfiguration.setSeqId(String.valueOf(feedDetailsForSubscriber.get(0).getSeqId()));
         docuSignConfiguration.setSubscriptionName(feedDetailsForSubscriber.get(0).getSubscriberName());
         docuSignConfiguration.setSubscriptionStatus(getStatus(feedDetailsForSubscriber.get(0).getSubscrStatus()));
-        docuSignConfiguration.setSubscriptionBeginDate(feedDetailsForSubscriber.get(0).getSubscrBeginDate().toString());
+        docuSignConfiguration.setSubscriptionBeginDate(dateUtil.getDateAsString(feedDetailsForSubscriber.get(0).getSubscrBeginDate()));
         docuSignConfiguration.setSubscriptionEndDate((feedDetailsForSubscriber.get(0).getSubscrEndDate() == null) ? null :
-                                                      feedDetailsForSubscriber.get(0).getSubscrEndDate().toString());
+                dateUtil.getDateAsString(feedDetailsForSubscriber.get(0).getSubscrEndDate()));
         docuSignConfiguration.setFileTransferMethod(feedDetailsForSubscriber.get(0).getFileXferMethod());
         docuSignConfiguration.setFileTransferId(feedDetailsForSubscriber.get(0).getFileXferId());
         docuSignConfiguration.setFileTransferDirectory(feedDetailsForSubscriber.get(0).getFileXferDir());
@@ -54,8 +54,9 @@ public class DocuSignSubscriptionServiceImpl  implements DocuSignSubscriptionSer
                 docuSignSubscriptionFile.setFileExtension(fileEntity.getFileExtension());
                 docuSignSubscriptionFile.setCreateFileWhenEmpty(
                         fileEntity.getCreateFileWhenEmpty().equalsIgnoreCase("Y") ? "Yes" : "No");
-                docuSignSubscriptionFile.setFileBeginDate(fileEntity.getFileBeginDate().toString());
-                docuSignSubscriptionFile.setFileEndDate(fileEntity.getFileEndDate() == null ? null : fileEntity.getFileEndDate().toString() );
+                docuSignSubscriptionFile.setFileBeginDate(dateUtil.getDateAsString(fileEntity.getFileBeginDate()));
+                docuSignSubscriptionFile.setFileEndDate(fileEntity.getFileEndDate() == null ? null :
+                        dateUtil.getDateAsString(fileEntity.getFileEndDate()));
                 docuSignSubscriptionFile.setInternalEmailNotifAdr(fileEntity.getInternalEmailNotifAddr());
                 docuSignSubscriptionFile.setMftUserName(fileEntity.getMftUserName());
                 docuSignSubscriptionFiles[idx++] = docuSignSubscriptionFile;
@@ -90,9 +91,10 @@ public class DocuSignSubscriptionServiceImpl  implements DocuSignSubscriptionSer
 
             docuSignConfiguration.setSeqId(String.valueOf(feedEntity.getSeqId()));
             docuSignConfiguration.setSubscriptionName(feedEntity.getSubscriberName());
-            docuSignConfiguration.setSubscriptionBeginDate(feedEntity.getSubscrBeginDate().toString());
-            docuSignConfiguration.setSubscriptionEndDate(feedEntity.getSubscrEndDate() != null ? feedEntity.getSubscrEndDate().toString() : null);
-            docuSignConfiguration.setSubscriptionStatus(feedEntity.getSubscrStatus());
+            docuSignConfiguration.setSubscriptionBeginDate(dateUtil.getDateAsString(feedEntity.getSubscrBeginDate()));
+            docuSignConfiguration.setSubscriptionEndDate(feedEntity.getSubscrEndDate() == null ? null :
+                    dateUtil.getDateAsString(feedEntity.getSubscrEndDate()));
+            docuSignConfiguration.setSubscriptionStatus(getStatus(feedEntity.getSubscrStatus()));
             docuSignConfiguration.setFileTransferMethod(feedEntity.getFileXferMethod());
             docuSignConfiguration.setFileTransferId(feedEntity.getFileXferId());
             docuSignConfiguration.setFileTransferDirectory(feedEntity.getFileXferDir());
@@ -104,10 +106,12 @@ public class DocuSignSubscriptionServiceImpl  implements DocuSignSubscriptionSer
     }
 
     public int updateDocuSignConfiguration(DocuSignConfiguration docuSignConfiguration) {
-        docuSignConfiguration.setSubscriptionBeginDate(dateUtil.reformatDate(
-        "yyyy-MM-dd", docuSignConfiguration.getSubscriptionBeginDate()));
-        docuSignConfiguration.setSubscriptionEndDate(dateUtil.reformatDate(
-        "yyyy-MM-dd", docuSignConfiguration.getSubscriptionEndDate()));
+//        docuSignConfiguration.setSubscriptionBeginDate(docuSignConfiguration.getSubscriptionBeginDate());
+//        docuSignConfiguration.setSubscriptionBeginDate(docuSignConfiguration.getSubscriptionEndDate());
+
+//        dateUtil.reformatDate("yyyy-MM-dd", docuSignConfiguration.getSubscriptionBeginDate()));
+        //dateUtil.reformatDate("yyyy-MM-dd", docuSignConfiguration.getSubscriptionEndDate()));
+
         return jdbcDocuSignSubscriberFeedDao.updateDocuSignConfiguration(docuSignConfiguration);
     }
 
