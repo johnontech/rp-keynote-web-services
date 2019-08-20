@@ -17,7 +17,8 @@ import java.util.List;
 /**
  * Created by John Jorgensen on 4/17/2017.
  */
-@Controller
+@CrossOrigin(origins = "http://localhost:4200", maxAge = 3600)
+@RestController
 public class LoanController {
 
     @Autowired
@@ -77,67 +78,14 @@ public class LoanController {
     @RequestMapping(method = RequestMethod.DELETE, value = "/docuSignConfiguration/{feedSeqId}", produces =  {"application/json"})
     public ResponseEntity<DocuSignConfiguration> deleteConfiguration(@PathVariable String feedSeqId) {
         log.debug("Delete configuration with parameters: Feed Seq Id '" + feedSeqId + "'");
-        DocuSignConfiguration docuSignConfiguration = docuSignSubscriptionService.deleteDocuSignSubscription(feedSeqId);
+        log.debug("Delete configuration with parameters: Feed Seq Id '" + feedSeqId + "'");
+        log.debug("Delete configuration with parameters: Feed Seq Id '" + feedSeqId + "'");
+        log.debug("Delete configuration with parameters: Feed Seq Id '" + feedSeqId + "'");
+        log.debug("Delete configuration with parameters: Feed Seq Id '" + feedSeqId + "'");
+        log.debug("Delete configuration with parameters: Feed Seq Id '" + feedSeqId + "'");
+        log.debug("Delete configuration with parameters: Feed Seq Id '" + feedSeqId + "'");
+//        DocuSignConfiguration docuSignConfiguration = docuSignSubscriptionService.deleteDocuSignSubscription(feedSeqId);
         log.debug("Successfully deleted configuration with parameters: Feed Seq Id '" + feedSeqId + "'");
         return new ResponseEntity<DocuSignConfiguration>(HttpStatus.OK);
-    }
-
-    @RequestMapping(method = RequestMethod.GET, value = "/loan/{loanNumber}")
-    public ResponseEntity<LoanDetail> getPrincipalAndInterest(@PathVariable String loanNumber,
-                                                              @RequestParam("repayAmount") String repayAmount,
-                                                              @RequestParam("repayDate") String repayDate) {
-
-        log.debug("Calling getPrincipalAndInterest with parameters: Loan Number '" +
-                loanNumber + "', Repay Amount '" + repayAmount + "', Repay Date '" + repayDate + "'");
-
-        if (validator.isValidGetPrincipalAndInterestInputParameters(loanNumber, repayAmount, repayDate)) {
-            LoanDetail loanDetail = loanService.getPrincipalAndInterest(validator.getNumber(loanNumber),
-                    validator.getAmount(repayAmount), validator.getDate(repayDate));
-            if (loanDetail == null) {
-                return new ResponseEntity<LoanDetail>(HttpStatus.NOT_FOUND);
-            }
-            return new ResponseEntity<LoanDetail>(loanDetail, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<LoanDetail>(HttpStatus.BAD_REQUEST);
-        }
-    }
-
-    @RequestMapping(method = RequestMethod.PUT, value = "/loan/{loanNumber}/repayment")
-    public ResponseEntity<LoanCorrectionDetail> updateRepayment(@PathVariable String loanNumber,
-                                                                @RequestBody RepaymentDetail repaymentDetail) {
-
-        log.debug("Calling updateRepayment with parameters: Loan Number '" + loanNumber +
-                "', Repayment Detail '" + repaymentDetail);
-
-        if (validator.isValidRepaymentInputParameters(loanNumber, repaymentDetail)) {
-            LoanCorrectionDetail loanCorrectionDetail = loanService.processRepayment(validator.getNumber(loanNumber), repaymentDetail);
-            if (loanCorrectionDetail == null) {
-                return new ResponseEntity<LoanCorrectionDetail>(HttpStatus.NOT_FOUND);
-            }
-            return new ResponseEntity<LoanCorrectionDetail>(loanCorrectionDetail, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<LoanCorrectionDetail>(HttpStatus.BAD_REQUEST);
-        }
-    }
-
-    @RequestMapping(method = RequestMethod.PUT, value = "/loan/{loanNumber}/reverseRepayment")
-    public ResponseEntity<LoanCorrectionDetail> updateReverseRepayment(@PathVariable String loanNumber,
-                                                                       @RequestBody ReverseRepaymentDetail reverseRepaymentDetail) {
-
-        log.debug("Calling updateReverseRepayment with parameters, Loan Number: '" + loanNumber +
-                "', Reverse Repayment Request: " + reverseRepaymentDetail);
-
-        if (validator.isValidUpdateReverseRepaymentInputParameters(loanNumber, reverseRepaymentDetail)) {
-            LoanCorrectionDetail loanCorrectionDetail =
-                    loanService.reverseRepayment(validator.getNumber(loanNumber), reverseRepaymentDetail);
-
-            if (loanCorrectionDetail == null) {
-                return new ResponseEntity<LoanCorrectionDetail>(HttpStatus.NOT_FOUND);
-            }
-            return new ResponseEntity<LoanCorrectionDetail>(loanCorrectionDetail, HttpStatus.OK);
-
-        } else {
-            return new ResponseEntity<LoanCorrectionDetail>(HttpStatus.BAD_REQUEST);
-        }
     }
 }
