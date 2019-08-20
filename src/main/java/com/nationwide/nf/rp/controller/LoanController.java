@@ -57,6 +57,7 @@ public class LoanController {
         return new ResponseEntity<DocuSignConfiguration[]>(allDocuSignConfigurations, headers, HttpStatus.OK );
     }
 
+    @CrossOrigin
     @RequestMapping(method = RequestMethod.PUT, value = "/docuSignConfiguration/{feedSeqId}", produces =  {"application/json"})
     public ResponseEntity<DocuSignConfiguration> updateDocuSignConfiguration(@RequestBody DocuSignConfiguration docuSignConfiguration) {
         log.info("Calling updateDocuSignConfiguration with parameters, docuSignConfiguration: '" + docuSignConfiguration);
@@ -64,6 +65,7 @@ public class LoanController {
         return new ResponseEntity<DocuSignConfiguration>(docuSignConfiguration, HttpStatus.OK);
     }
 
+    @CrossOrigin
     @RequestMapping(method = RequestMethod.POST, value = "/docuSignConfiguration/{feedSeqId}", produces =  {"application/json"})
     public ResponseEntity<DocuSignConfiguration> createDocuSignConfiguration(@RequestBody DocuSignConfiguration docuSignConfiguration) {
         log.info("Calling createDocuSignConfiguration with parameters, docuSignConfiguration: '" + docuSignConfiguration);
@@ -71,6 +73,7 @@ public class LoanController {
         return new ResponseEntity<DocuSignConfiguration>(docuSignConfiguration, HttpStatus.OK);
     }
 
+    @CrossOrigin
     @RequestMapping(method = RequestMethod.DELETE, value = "/docuSignConfiguration/{feedSeqId}", produces =  {"application/json"})
     public ResponseEntity<DocuSignConfiguration> deleteConfiguration(@PathVariable String feedSeqId) {
         log.debug("Delete configuration with parameters: Feed Seq Id '" + feedSeqId + "'");
