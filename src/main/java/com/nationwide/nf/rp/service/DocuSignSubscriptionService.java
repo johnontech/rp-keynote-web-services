@@ -14,5 +14,5 @@ public interface DocuSignSubscriptionService {
 
     DocuSignConfiguration createDocuSignConfiguration(DocuSignConfiguration docuSignConfiguration);
 
-    DocuSignConfiguration deleteDocuSignSubscription(String feedSeqId);
+    void deleteDocuSignSubscription(String feedSeqId);
 }

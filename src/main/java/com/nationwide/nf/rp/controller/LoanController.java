@@ -77,15 +77,8 @@ public class LoanController {
     @CrossOrigin
     @RequestMapping(method = RequestMethod.DELETE, value = "/docuSignConfiguration/{feedSeqId}", produces =  {"application/json"})
     public ResponseEntity<DocuSignConfiguration> deleteConfiguration(@PathVariable String feedSeqId) {
-        log.debug("Delete configuration with parameters: Feed Seq Id '" + feedSeqId + "'");
-        log.debug("Delete configuration with parameters: Feed Seq Id '" + feedSeqId + "'");
-        log.debug("Delete configuration with parameters: Feed Seq Id '" + feedSeqId + "'");
-        log.debug("Delete configuration with parameters: Feed Seq Id '" + feedSeqId + "'");
-        log.debug("Delete configuration with parameters: Feed Seq Id '" + feedSeqId + "'");
-        log.debug("Delete configuration with parameters: Feed Seq Id '" + feedSeqId + "'");
-        log.debug("Delete configuration with parameters: Feed Seq Id '" + feedSeqId + "'");
-//        DocuSignConfiguration docuSignConfiguration = docuSignSubscriptionService.deleteDocuSignSubscription(feedSeqId);
-        log.debug("Successfully deleted configuration with parameters: Feed Seq Id '" + feedSeqId + "'");
+        log.info("Calling deleteConfiguration seqId: '" + feedSeqId + "'");
+        docuSignSubscriptionService.deleteDocuSignSubscription(feedSeqId);
         return new ResponseEntity<DocuSignConfiguration>(HttpStatus.OK);
     }
 }
