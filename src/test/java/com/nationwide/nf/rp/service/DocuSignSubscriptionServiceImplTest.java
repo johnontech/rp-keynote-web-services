@@ -77,7 +77,6 @@ public class DocuSignSubscriptionServiceImplTest {
         assertTrue("Number of rows updated should be one", numberOfRowsUpdated == 1);
 
         DocuSignConfiguration returnedDocuSignConfiguration = docuSignSubscriptionService.getDocuSignSubscription("1");
-        log.info(returnedDocuSignConfiguration);
     }
 
     @Test
