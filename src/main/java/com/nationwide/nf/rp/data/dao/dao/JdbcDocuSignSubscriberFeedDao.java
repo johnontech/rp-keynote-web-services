@@ -76,6 +76,7 @@ public class JdbcDocuSignSubscriberFeedDao extends BaseDao {
 				"SUBSCR_STATUS = ? " +
 				"WHERE SEQ_ID = ? ";
 
+		log.info("Before Update: " + sql + docuSignConfiguration);
 		int numberOfRowsUpdated  = getJdbcTemplate().update(sql,
 				docuSignConfiguration.getSubscriptionName(),
 				docuSignConfiguration.getFileTransferMethod(),
@@ -89,15 +90,16 @@ public class JdbcDocuSignSubscriberFeedDao extends BaseDao {
 	}
 
 	public DocuSignConfiguration create(DocuSignConfiguration docuSignConfiguration) {
-		int numberOfDocuSignConfigurations = getNumberOfDocuSignConfigurations();
+		int numberOfDocuSignConfigurations = getNextDocuSignConfigurationSeqId();
 		System.out.println(numberOfDocuSignConfigurations);
-		docuSignConfiguration.setSeqId(String.valueOf(++numberOfDocuSignConfigurations));
+		docuSignConfiguration.setSeqId(String.valueOf(numberOfDocuSignConfigurations));
 
 		String sql = "INSERT INTO PPAK_DOCUSIGN_SUBSCR_FEED " +
 				"(SEQ_ID,SUBSCRIBER_NAME,FILE_XFER_METHOD,FILE_XFER_ID,FILE_XFER_DIR," +
 				 "SUBSCR_BEGIN_DATE,SUBSCR_END_DATE,SUBSCR_STATUS) " +
 				"VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
+		log.info("Before Create: " + sql + docuSignConfiguration);
 		int rowCount = getJdbcTemplate().update(sql,
 				docuSignConfiguration.getSeqId(),
 				docuSignConfiguration.getSubscriptionName(),
@@ -110,6 +112,11 @@ public class JdbcDocuSignSubscriberFeedDao extends BaseDao {
 
 		System.out.println("Number of docusign rows inserted: " + rowCount);
 		return docuSignConfiguration;
+	}
+
+	private int getNextDocuSignConfigurationSeqId() {
+		return getJdbcTemplate().queryForObject("SELECT MAX(SEQ_ID) + 1 FROM PPAK_DOCUSIGN_SUBSCR_FEED",
+				new Object[]{}, Integer.class);
 	}
 
 	private int getNumberOfDocuSignConfigurations() {

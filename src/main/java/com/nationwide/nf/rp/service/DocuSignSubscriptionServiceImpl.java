@@ -106,20 +106,14 @@ public class DocuSignSubscriptionServiceImpl  implements DocuSignSubscriptionSer
     }
 
     public int updateDocuSignConfiguration(DocuSignConfiguration docuSignConfiguration) {
-//        docuSignConfiguration.setSubscriptionBeginDate(docuSignConfiguration.getSubscriptionBeginDate());
-//        docuSignConfiguration.setSubscriptionBeginDate(docuSignConfiguration.getSubscriptionEndDate());
-
-//        dateUtil.reformatDate("yyyy-MM-dd", docuSignConfiguration.getSubscriptionBeginDate()));
-        //dateUtil.reformatDate("yyyy-MM-dd", docuSignConfiguration.getSubscriptionEndDate()));
-
         return jdbcDocuSignSubscriberFeedDao.updateDocuSignConfiguration(docuSignConfiguration);
     }
 
     public DocuSignConfiguration createDocuSignConfiguration(DocuSignConfiguration docuSignConfiguration) {
-        docuSignConfiguration.setSubscriptionBeginDate(dateUtil.reformatDate(
-                "yyyy-MM-dd", docuSignConfiguration.getSubscriptionBeginDate()));
-        docuSignConfiguration.setSubscriptionEndDate(dateUtil.reformatDate(
-                "yyyy-MM-dd", docuSignConfiguration.getSubscriptionEndDate()));
+//        docuSignConfiguration.setSubscriptionBeginDate(dateUtil.reformatDate(
+//                "yyyy-MM-dd", docuSignConfiguration.getSubscriptionBeginDate()));
+//        docuSignConfiguration.setSubscriptionEndDate(dateUtil.reformatDate(
+//                "yyyy-MM-dd", docuSignConfiguration.getSubscriptionEndDate()));
         return jdbcDocuSignSubscriberFeedDao.create(docuSignConfiguration);
     }
 
