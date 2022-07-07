@@ -14,7 +14,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <tomcat.deploy.directory>C:/PROGRA~1/APACHE~1/TOMCAT~1.0/webapps/</tomcat.deploy.directory>
-        <spring.version>4.3.10.RELEASE</spring.version>
+        <spring.version>5.2.21.RELEASE</spring.version>
    </properties>
 
     <packaging>war</packaging>
